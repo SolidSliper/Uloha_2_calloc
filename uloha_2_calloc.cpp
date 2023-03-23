@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-void intersection(int **intersec, int *set1, int *set2, int n, int *k1){
+void intersection(int** intersec, int* set1, int* set2, int n, int* k1) {
     *intersec = (int*)malloc(n * sizeof(int));
     int i, j;  //Cyklus pre najdenia intersection, + podmienky, čísla boli jedinečné
-    for (i = 0; i < n; i++) { 
+    for (i = 0; i < n; i++) {
         for (j = 0; j < n; j++) {
             if (set1[i] == set2[j]) {
                 int t = 0;
@@ -15,7 +15,7 @@ void intersection(int **intersec, int *set1, int *set2, int n, int *k1){
                         break;
                     }
                 }
-                if (t==0) {
+                if (t == 0) {
                     (*intersec)[(*k1)] = set1[i];
                     (*k1)++;
                 }
@@ -26,11 +26,11 @@ void intersection(int **intersec, int *set1, int *set2, int n, int *k1){
 }
 
 
-void unions(int **unio, int *set1, int *set2, int n, int *k2){
+void unions(int** unio, int* set1, int* set2, int n, int* k2) {
     *unio = (int*)malloc(2 * n * sizeof(int));
     int i, j;
     //Cyklus pre najdenia union zo prvou množinou, + podmienky, abi čísla boli jedinečné
-    for (i = 0; i < n; i++) { 
+    for (i = 0; i < n; i++) {
         int t = 0;
         for (j = 0; j < n; j++) {
             if (set2[i] == (*unio)[j]) { t = 1;  break; }
@@ -60,14 +60,29 @@ void unions(int **unio, int *set1, int *set2, int n, int *k2){
     }
 }
 
-void nastav(int **set1, int **set2, int n){
-    *set1 = (int *)malloc(n * sizeof(int));
-    *set2 = (int *)malloc(n * sizeof(int));
+void nastav(int** set1, int** set2, int n) {
+    *set1 = (int*)malloc(n * sizeof(int));
+    *set2 = (int*)malloc(n * sizeof(int));
     int i;
     for (i = 0; i < n; i++) {
         (*set1)[i] = rand() % 10;
         (*set2)[i] = rand() % 10;
     }
+}
+
+void print(int* intersec, int* unio, int k1, int k2, int n) {
+    int i, j;
+    printf("Intersection: "); //výstup intersection
+    for (i = 0; i < k1; i++) {
+        printf("%d ", intersec[i]);
+    }
+    printf("\n");
+
+    printf("Union: ");  //výstup union
+    for (i = 0; i < k2; i++) {
+        printf("%d ", unio[i]);
+    }
+    printf("\n");
 }
 
 int main() {
@@ -82,7 +97,6 @@ int main() {
     scanf("%i", &n);
 
     //Deklarácia dynamických polí, aby ste si sami mohli nastaviť veľkosť množín
-    //unio = (int*)malloc(2 * n * sizeof(int));
 
     nastav(&set1, &set2, n);
 
@@ -101,19 +115,9 @@ int main() {
 
     intersection(&intersec, set1, set2, n, &k1);
 
-    printf("Intersection: "); //výstup intersection
-    for (i = 0; i < k1; i++) {
-        printf("%d ", intersec[i]);
-    }
-    printf("\n");
-    
     unions(&unio, set1, set2, n, &k2);
 
-    printf("Union: ");  //výstup union
-    for (i = 0; i < k2; i++) {
-        printf("%d ", unio[i]);
-    }
-    printf("\n");
+    print(intersec, unio, k1, k2, n);
 
     free(set1);
     free(set2);
